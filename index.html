@@ -1,637 +1,499 @@
-<?php
-Smonetag zone_id "9732839";?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-   
-   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earning Bot</title>
-<script src="//doakosteceet.net/vignette.min.js' data-zone-'<? Smonetag zone_id ?>" data-sdk-show <? Smonetag_zone_id ?>'></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #f8f8f8;
-            color: #333;
-            padding: 10px;
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        header {
-            background-color: #0088cc;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .back-button {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        
-        .user-info {
-            background-color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .balance {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #0088cc;
-        }
-        
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .option-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .option-card:active {
-            transform: scale(0.98);
-            background-color: #f0f0f0;
-        }
-        
-        .option-card i {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            color: #0088cc;
-        }
-        
-        .daily-bonus {
-            background-color: #ff9500;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .bonus-button {
-            background-color: white;
-            color: #ff9500;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            margin-top: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .bonus-button:disabled {
-            background-color: #ff9500;
-            color: white;
-            opacity: 0.7;
-        }
-        
-        .task-item {
-            background-color: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .task-reward {
-            color: #0088cc;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        
-        .task-btn {
-            background-color: #0088cc;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            width: 100%;
-            cursor: pointer;
-        }
-        
-        .task-btn:disabled {
-            background-color: #8bc34a;
-            cursor: default;
-        }
-        
-        .form-group {
-            margin: 15px 0;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
-        }
-        
-        .submit-btn {
-            background-color: #0088cc;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            width: 100%;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        .referral-link {
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            word-break: break-all;
-        }
-        
-        .stats {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .stats h3 {
-            margin-bottom: 10px;
-            color: #0088cc;
-        }
-        
-        .stats p {
-            margin: 5px 0;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        /* Telegram-like animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .page {
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        /* Ad container style */
-        .ad-container {
-            width: 100%;
-            min-height: 250px;
-            background-color: #f0f0f0;
-            border-radius: 8px;
-            margin: 15px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
-        .ad-container p {
-            margin-top: 10px;
-            color: #666;
-        }
-        
-        .close-ad-btn {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Monetag Mini App – Earn</title>
+  <meta name="theme-color" content="#0ea5e9" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #111a2b;
+      --muted: #9fb0c9;
+      --text: #e7f0ff;
+      --primary: #0ea5e9; /* sky-500 */
+      --primary-600: #0284c7;
+      --accent: #22d3ee; /* cyan-400 */
+      --danger: #ef4444;
+      --success: #22c55e;
+      --shadow: 0 10px 30px rgba(2,132,199,.25);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 50% -10%, #0b2550 0%, #0b1220 60%);
+      color: var(--text);
+    }
+    .app { display: grid; grid-template-rows: auto 1fr auto; height: 100dvh; }
+
+    /* Header */
+    .header {
+      position: sticky; top: 0; z-index: 5;
+      padding: 14px 16px 8px; backdrop-filter: saturate(140%) blur(8px);
+      background: linear-gradient(180deg, rgba(2,12,26,.85), rgba(2,12,26,.35) 70%, transparent);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .row { display: flex; align-items: center; gap: 12px; }
+    .grow { flex: 1; }
+    .user-chip {
+      display: inline-flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(14,165,233,.18), rgba(34,211,238,.10));
+      border: 1px solid rgba(14,165,233,.35);
+      box-shadow: var(--shadow);
+    }
+    .avatar { width: 36px; height: 36px; border-radius: 999px; background: #0b1d3a; display: grid; place-items: center; font-weight: 700; }
+
+    /* Cards */
+    .container { padding: 14px 14px 92px; }
+    .grid { display: grid; gap: 12px; }
+    .card {
+      background: linear-gradient(180deg, rgba(17,26,43,.9), rgba(10,16,28,.92));
+      border: 1px solid rgba(148,163,184,.15);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 700; letter-spacing: .2px; }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .balance {
+      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px;
+      background: radial-gradient(500px 200px at 20% -40%, rgba(2,132,199,.3), transparent 60%),
+                  radial-gradient(400px 160px at 120% -60%, rgba(34,211,238,.25), transparent 60%),
+                  linear-gradient(180deg, rgba(2,8,23,.7), rgba(2,8,23,.95));
+      border: 1px solid rgba(56,189,248,.35);
+    }
+    .balance .amount { font-size: 28px; font-weight: 800; letter-spacing: .5px; }
+    .pill { display:inline-block; padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid rgba(255,255,255,.12); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 100%; height: 56px; border-radius: 14px;
+      border: 1px solid rgba(14,165,233,.5); background: linear-gradient(180deg, var(--primary), var(--primary-600));
+      color: white; font-weight: 700; letter-spacing: .2px; cursor: pointer;
+      box-shadow: 0 8px 18px rgba(14,165,233,.35);
+      transition: transform .05s ease, filter .2s ease; user-select: none;
+    }
+    .btn:active { transform: translateY(1px) scale(.995); }
+    .btn[disabled] { opacity: .6; filter: saturate(.4); pointer-events: none; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .list { display: grid; gap: 10px; }
+    .item { padding: 12px; border-radius: 12px; border: 1px solid rgba(148,163,184,.15); background: #0d1628; display: grid; gap: 4px; }
+
+    .form { display: grid; gap: 10px; }
+    .field { display: grid; gap: 6px; }
+    .input, .select, .textarea {
+      height: 46px; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(148,163,184,.25);
+      outline: none; background: #0b1426; color: var(--text); font-size: 15px;
+    }
+    .textarea { height: 90px; resize: vertical; }
+    .help { font-size: 12px; color: var(--muted); }
+    .danger { color: var(--danger); }
+    .success { color: var(--success); }
+
+    /* Tabs */
+    .tabs { position: fixed; left: 0; right: 0; bottom: 0; backdrop-filter: blur(10px) saturate(140%);
+      background: linear-gradient(180deg, rgba(3,7,18,.2), rgba(3,7,18,.75)); border-top: 1px solid rgba(255,255,255,.08);
+      display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 6px; gap: 6px; z-index: 5; }
+    .tab { display: grid; place-items: center; gap: 4px; padding: 8px 6px; border-radius: 12px; color: var(--muted); font-size: 11.5px; }
+    .tab.active { color: var(--text); background: rgba(14,165,233,.12); border: 1px solid rgba(14,165,233,.35); }
+
+    .hidden { display: none !important; }
+    .copy { cursor: pointer; }
+    .tag { font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(148,163,184,.2); }
+    .kpi { display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .kbox { background:#0d1628; border:1px solid rgba(148,163,184,.15); border-radius:12px; padding:10px; }
+    .kbox .v { font-size:16px; font-weight:800 }
+    .kbox .l { font-size:12px; color:var(--muted) }
+
+    a { color: var(--accent); text-decoration: none; }
+  </style>
+  
+  <!-- Telegram Mini App JS -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- Monetag SDK (replace zone if needed) -->
+  <script src='//libtl.com/sdk.js' data-zone='9732839' data-sdk='show_9732839'></script>
 </head>
 <body>
-    <!-- Main Page -->
-    <div class="container" id="main-page">
-        <header>
-            <div class="back-button hidden" id="main-back-btn"><i class="fas fa-arrow-left"></i></div>
-            <h1>Earning Bot</h1>
-        </header>
-        
-        <div class="user-info">
-            <div>
-                <div>Welcome, User</div>
-                <div class="balance">Balance: $10.50</div>
-            </div>
-            <div>
-                <i class="fas fa-user-circle" style="font-size: 2rem; color: #0088cc;"></i>
-            </div>
+<div class="app">
+  <!-- Header -->
+  <header class="header">
+    <div class="row">
+      <div class="user-chip">
+        <div class="avatar" id="avatar">👤</div>
+        <div>
+          <div id="uname" style="font-weight:700">User</div>
+          <div class="muted" id="uid">UID: -</div>
         </div>
-        
-        <div class="daily-bonus">
-            <h3>Daily Check-in Bonus</h3>
-            <p>Claim your daily reward!</p>
-            <button id="claim-btn" class="bonus-button">Claim $0.50</button>
-        </div>
-        
-        <div class="options-grid">
-            <div class="option-card" onclick="showPage('home-page')">
-                <i class="fas fa-home"></i>
-                <h3>Home</h3>
-                <p>Main dashboard</p>
-            </div>
-            
-            <div class="option-card" onclick="showPage('tasks-page')">
-                <i class="fas fa-ad"></i>
-                <h3>Ad Tasks</h3>
-                <p>Complete ads & earn</p>
-            </div>
-            
-            <div class="option-card" onclick="showPage('referral-page')">
-                <i class="fas fa-users"></i>
-                <h3>Referral</h3>
-                <p>Invite friends & earn</p>
-            </div>
-            
-            <div class="option-card" onclick="showPage('withdraw-page')">
-                <i class="fas fa-money-bill-wave"></i>
-                <h3>Withdraw</h3>
-                <p>Cash out your earnings</p>
-            </div>
-        </div>
+      </div>
+      <div class="grow"></div>
+      <span class="tag" id="vipTag">VIP: Free</span>
     </div>
-    
-    <!-- Home Page -->
-    <div class="container page hidden" id="home-page">
-        <header>
-            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
-            <h1>Dashboard</h1>
-        </header>
-        
-        <div class="stats">
-            <h3>Your Stats</h3>
-            <p>Total Earnings: $25.30</p>
-            <p>Tasks Completed: 12</p>
-            <p>Referrals: 3</p>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- HOME TAB -->
+    <section id="tab-home" class="grid">
+      <div class="card balance">
+        <div>
+          <div class="muted">Current balance</div>
+          <div class="amount" id="balance">₦0</div>
+          <div class="muted" id="lastAction">Last update</div>
         </div>
-        
-        <div class="option-card" onclick="showPage('profile-page')">
-            <i class="fas fa-user"></i>
-            <h3>Profile</h3>
-            <p>View your account details</p>
+        <div>
+          <span class="pill">Minimum Withdrawal: ₦1000</span>
         </div>
-        
-        <div class="option-card" onclick="showPage('settings-page')">
-            <i class="fas fa-cog"></i>
-            <h3>Settings</h3>
-            <p>Configure app preferences</p>
+      </div>
+
+      <div class="grid">
+        <div class="row-2">
+          <button class="btn" id="adBtn1">🎯 Ad Task 1</button>
+          <button class="btn" id="adBtn2">🚀 Ad Task 2</button>
         </div>
-    </div>
-    
-    <!-- Tasks Page -->
-    <div class="container page hidden" id="tasks-page">
-        <header>
-            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
-            <h1>Ad Tasks</h1>
-        </header>
-        
-        <p style="margin: 15px 0;">Complete these tasks to earn money</p>
-        
-        <div class="task-item">
-            <h4>Watch Video Ad</h4>
-            <p>Watch a 15-second video advertisement</p>
-            <div class="task-reward">Reward: $0.10</div>
-            <button class="task-btn" onclick="showAd('Watch Video Ad', '$0.10')">Start Task</button>
+        <button class="btn" id="adBtn3">💎 Ad Task 3</button>
+        <div class="help">👉<b>₦1</b> will be automatically added after watching each ad. Repeated spamming will cause a cooldown. </div>
+      </div>
+
+      <div class="grid">
+        <div class="kpi">
+          <div class="kbox"><div class="v" id="kEarn">₦0</div><div class="l">Total income</div></div>
+          <div class="kbox"><div class="v" id="kTasks">0</div><div class="l">Complete</div></div>
+          <div class="kbox"><div class="v" id="kRef">0</div><div class="l">Refer </div></div>
+          <div class="kbox"><div class="v" id="kWith">₦0</div><div class="l">Total withdrawal</div></div>
         </div>
-        
-        <div class="task-item">
-            <h4>Install App</h4>
-            <p>Install and open the recommended app</p>
-            <div class="task-reward">Reward: $0.50</div>
-            <button class="task-btn" onclick="startTask(this, 'Install App', '$0.50')">Start Task</button>
+      </div>
+
+      <div class="card">
+        <h3>How to work?</h3>
+        <div class="list">
+          <div class="item">• Click on the task button to view the ad. </div>
+          <div class="item">• You will get<b>₦1</b>for each valid view</div>
+          <div class="item">• You can withdraw if you have 1000 taka.</div>
         </div>
-        
-        <div class="task-item">
-            <h4>Survey</h4>
-            <p>Complete a short survey (2-3 minutes)</p>
-            <div class="task-reward">Reward: $0.30</div>
-            <button class="task-btn" onclick="startTask(this, 'Survey', '$0.30')">Start Task</button>
+      </div>
+    </section>
+
+    <!-- TASK TAB -->
+    <section id="tab-task" class="grid hidden">
+      <div class="card">
+        <h3>Daily Tasks </h3>
+        <div class="grid">
+          <button class="btn" id="tAd1">🎯 Watch Ad & Earn</button>
+          <button class="btn" id="tAd2">🚀 Watch Ad & Earn</button>
+          <button class="btn" id="tAd3">💎 Watch Ad & Earn</button>
+          <div class="help">Regular use may cause a cooldown (0 seconds).</div>
         </div>
-    </div>
-    
-    <!-- Ad Display Page -->
-    <div class="container page hidden" id="ad-page">
-        <header>
-            <div class="back-button" onclick="closeAd()"><i class="fas fa-arrow-left"></i></div>
-            <h1 id="ad-task-title">Watch Ad</h1>
-        </header>
-        
-        <div class="ad-container" id="monetag-ad-container">
-            <p>Loading advertisement...</p>
-        </div>
-        
-        <div id="ad-complete-section" class="hidden">
-            <p>Please watch the full ad to receive your reward.</p>
-            <button class="submit-btn" onclick="completeAdTask()">I Watched the Full Ad</button>
-        </div>
-    </div>
-    
-    <!-- Referral Page -->
-    <div class="container page hidden" id="referral-page">
-        <header>
-            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
-            <h1>Referral Program</h1>
-        </header>
-        
-        <div class="stats">
-            <h3>Invite Friends</h3>
-            <p>Earn 20% of your referrals' earnings!</p>
-            
-            <div class="form-group">
-                <label>Your Referral Link:</label>
-                <div class="referral-link">https://t.me/earning_bot?start=ref123</div>
-                <button class="submit-btn" onclick="copyToClipboard('https://t.me/earning_bot?start=ref123')">Copy Link</button>
+      </div>
+
+      <div class="card">
+        <h3>Tasks History</h3>
+        <div id="taskHistory" class="list"></div>
+      </div>
+    </section>
+
+    <!-- TEAM TAB -->
+    <section id="tab-team" class="grid hidden">
+      <div class="card">
+        <h3>Invite & Earn</h3>
+        <div class="list">
+          <div class="item">
+            <div class="muted">Your referral link</div>
+            <div class="row" style="justify-content:space-between; gap:8px; align-items:center;">
+              <div id="refLink" class="muted" style="word-break:break-all"></div>
+              <button class="btn" id="copyRef" style="width:auto; padding:0 14px; height:40px">📋 Copy</button>
             </div>
-            
-            <h3 style="margin-top: 20px;">Your Referrals</h3>
-            <p>Total Referrals: 3</p>
-            <p>Earned from Referrals: $4.20</p>
+          </div>
+          <div class="item"><b id="refCount">0</b> John referred users</div>
+          <div class="item">Every valid referral = <b>₦0</b> bonus</div>
         </div>
-    </div>
-    
-    <!-- Withdraw Page -->
-    <div class="container page hidden" id="withdraw-page">
-        <header>
-            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
-            <h1>Withdraw Earnings</h1>
-        </header>
-        
-        <div class="stats">
-            <p>Minimum withdrawal amount: $5.00</p>
-            <p>Available balance: $10.50</p>
-            
-            <div class="form-group">
-                <label>Amount to Withdraw ($):</label>
-                <input type="number" min="5" max="10.5" step="0.01" placeholder="Enter amount" id="withdraw-amount">
-            </div>
-            
-            <div class="form-group">
-                <label>Payment Method:</label>
-                <select id="payment-method">
-                    <option>PayPal</option>
-                    <option>Bank Transfer</option>
-                    <option>USDT (TRC20)</option>
-                    <option>Telegram Wallet</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label>Payment Email/Account:</label>
-                <input type="text" placeholder="Enter your payment details" id="payment-details">
-            </div>
-            
-            <button class="submit-btn" onclick="requestWithdrawal()">Request Withdrawal</button>
+      </div>
+    </section>
+
+    <!-- WITHDRAW TAB -->
+    <section id="tab-withdraw" class="grid hidden">
+      <div class="card balance">
+        <div>
+          <div class="muted">Available for withdrawal</div>
+          <div class="amount" id="wBalance">₦ 0</div>
         </div>
-    </div>
-    
-    <!-- Profile Page -->
-    <div class="container page hidden" id="profile-page">
-        <header>
-            <div class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i></div>
-            <h1>Your Profile</h1>
-        </header>
-        
-        <div style="text-align: center; margin: 20px 0;">
-            <i class="fas fa-user-circle" style="font-size: 4rem; color: #0088cc;"></i>
-            <h3>User123</h3>
-            <p>Member since: Jan 2023</p>
+        <div><span class="pill">Minimum: ₦1000</span></div>
+      </div>
+
+      <div class="card">
+        <h3>Withdrawal form</h3>
+        <form class="form" id="withdrawForm">
+          <div class="field">
+            <label>Name</label>
+            <input class="input" id="wName" placeholder="আপনার নাম" required />
+          </div>
+          <div class="field">
+            <label>Wallet address</label>
+            <input class="input" id="wMobile" placeholder="Enter Wallet address" required />
+          </div>
+          <div class="field">
+            <label>Payment system</label>
+            <select class="select" id="wMethod" required>
+              <option value="">Select</option>
+              <option>OPAY</option>
+              <option>PALMPAY</option>
+              <option>KUDA</option>
+              <option>MONIY POINT </option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Amount</label>
+            <input type="number" min="1000" class="input" id="wAmount" placeholder="₦1000+" required />
+            <div class="help">Minimum ₦1000. Do not request more than the balance.</div>
+          </div>
+          <button class="btn" type="submit" id="wSubmit">💸 Withdraw Request</button>
+          <div id="wMsg" class="help"></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Withdrawal history</h3>
+        <div id="withHistory" class="list"></div>
+      </div>
+    </section>
+
+    <!-- PROFILE TAB -->
+    <section id="tab-profile" class="grid hidden">
+      <div class="card">
+        <h3>Profile</h3>
+        <div class="list">
+          <div class="item"><b>Name:</b> <span id="pName">-</span></div>
+          <div class="item"><b>User:</b> <span id="pUser">-</span></div>
+          <div class="item"><b>UID:</b> <span id="pUid">-</span></div>
+          <div class="item"><b>Balance:</b> <span id="pBal">₦0</span></div>
+          <div class="item">
+            <div class="muted">Note: This is our trusted free income Telegram bot, here you will get 100% withdrawal payment by working.</div>
+          </div>
         </div>
-        
-        <div class="stats">
-            <h3>Account Information</h3>
-            <p>Email: user@example.com</p>
-            <p>Country: United States</p>
-        </div>
-        
-        <button class="submit-btn" style="background-color: #f44336;" onclick="logout()">Logout</button>
-    </div>
-    
-    <!-- Settings Page -->
-    <div class="container page hidden" id="settings-page">
-        <header>
-            <div class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i></div>
-            <h1>Settings</h1>
-        </header>
-        
-        <div class="stats">
-            <div class="form-group">
-                <label>Notification Preferences</label>
-                <div style="margin-top: 10px;">
-                    <input type="checkbox" id="email-notif" checked>
-                    <label for="email-notif">Email Notifications</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="push-notif" checked>
-                    <label for="push-notif">Push Notifications</label>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Theme</label>
-                <select id="theme-selector">
-                    <option>Light</option>
-                    <option>Dark</option>
-                    <option>System Default</option>
-                </select>
-            </div>
-            
-            <button class="submit-btn" onclick="saveSettings()">Save Settings</button>
-        </div>
-    </div>
-    
-    <script>
-        // Telegram Bot API integration
-        const TELEGRAM_BOT_TOKEN = '8322375043:AAEnXPNxuLeOoF-fg3QkcfHizg94jeYtphI';
-        let currentAdTask = null;
-        let currentAdReward = null;
-        
-        // Show specific page and hide others
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.add('hidden');
-            });
-            document.getElementById(pageId).classList.remove('hidden');
-        }
-        
-        // Copy text to clipboard
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copied to clipboard: ' + text);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-        
-        // Claim daily bonus
-        document.getElementById('claim-btn').addEventListener('click', function() {
-            alert('Daily bonus claimed! $0.50 has been added to your balance.');
-            this.textContent = 'Claimed Today';
-            this.disabled = true;
-        });
-        
-        // Show ad for task
-        function showAd(taskName, reward) {
-            currentAdTask = taskName;
-            currentAdReward = reward;
-            
-            // Set the task title
-            document.getElementById('ad-task-title').textContent = taskName;
-            
-            // Show the ad page
-            showPage('ad-page');
-            
-            // Load Monetag ad
-            loadMonetagAd();
-            
-            // Show complete button after 15 seconds (simulating ad duration)
-            setTimeout(() => {
-                document.getElementById('ad-complete-section').classList.remove('hidden');
-            }, 15000);
-        }
-        
-        // Load Monetag ad
-        function loadMonetagAd() {
-            const adContainer = document.getElementById('monetag-ad-container');
-            adContainer.innerHTML = '<p>Loading advertisement...</p>';
-            
-            // In a real implementation, you would initialize the Monetag ad here
-            // For demonstration, we'll simulate an ad loading
-            setTimeout(() => {
-                adContainer.innerHTML = `
-                    <div style="width: 100%; height: 250px; background-color: #ddd; display: flex; justify-content: center; align-items: center;">
-                        <h3>Advertisement Content</h3>
-                    </div>
-                    <p>Please watch this ad for 15 seconds to earn your reward</p>
-                `;
-            }, 1000);
-        }
-        
-        // Complete ad task
-        function completeAdTask() {
-            alert(`Task completed! ${currentAdReward} has been added to your balance.`);
-            
-            // In a real implementation, you would track the completion with Telegram API
-            trackTaskCompletion(currentAdTask, currentAdReward);
-            
-            // Return to tasks page
-            showPage('tasks-page');
-            
-            // Reset ad task
-            currentAdTask = null;
-            currentAdReward = null;
-        }
-        
-        // Close ad without completing
-        function closeAd() {
-            if (confirm('Are you sure you want to close without completing the ad? You won\'t receive the reward.')) {
-                showPage('tasks-page');
-                currentAdTask = null;
-                currentAdReward = null;
-            }
-        }
-        
-        // Start a regular task (not ad)
-        function startTask(button, taskName, reward) {
-            alert(`Starting task: ${taskName}\nPlease complete the task to earn ${reward}`);
-            
-            // Simulate task completion after 3 seconds
-            setTimeout(() => {
-                alert(`Task completed! ${reward} has been added to your balance.`);
-                button.textContent = 'Completed';
-                button.disabled = true;
-                
-                // Track task completion with Telegram API
-                trackTaskCompletion(taskName, reward);
-            }, 3000);
-        }
-        
-        // Track task completion with Telegram API
-        function trackTaskCompletion(taskName, reward) {
-            // In a real implementation, you would send this data to your Telegram bot
-            console.log(`Task completed: ${taskName}, Reward: ${reward}`);
-            
-            // Example of how you might send data to Telegram bot
-            // fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         chat_id: ADMIN_CHAT_ID, // Your admin chat ID
-            //         text: `New withdrawal request:\nAmount: $${amount}\nMethod: ${method}\nDetails: ${details}`
-            //     })
-            // });
-        }
-        
-        // Logout
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                alert('You have been logged out.');
-                showPage('main-page');
-            }
-        }
-        
-        // Save settings
-        function saveSettings() {
-            const emailNotif = document.getElementById('email-notif').checked;
-            const pushNotif = document.getElementById('push-notif').checked;
-            const theme = document.getElementById('theme-selector').value;
-            
-            alert('Settings saved successfully!');
-            showPage('home-page');
-        }
-        
-        // Initialize - show main page
-        showPage('main-page');
-    </script>
+      </div>
+    </section>
+  </main>
+
+  <!-- Tabs -->
+  <nav class="tabs">
+    <div class="tab active" data-tab="home">🏠<div>Home </div></div>
+    <div class="tab" data-tab="task">🧩<div>Tasks </div></div>
+    <div class="tab" data-tab="team">👥<div>Team</div></div>
+    <div class="tab" data-tab="withdraw">💳<div>Withdraw</div></div>
+    <div class="tab" data-tab="profile">👤<div>Profile</div></div>
+  </nav>
+</div>
+
+<script>
+  // ====== CONFIG (Replace with your details) ======
+  const BOT_TOKEN = '8322375043:AAEnXPNxuLeOoF-fg3QkcfHizg94jeYtphI; // ⚠️ Exposed in client – for demo only
+  const PRIVATE_CHANNEL_ID = -1002699265904; // your private channel ID
+  const BOT_USERNAME = '@Earning_25_bot'; // for referral link
+  const REWARD_PER_AD = 1; // ₦1 per valid ad view (demo)
+  const COOLDOWN_MS = 20000; // 20 seconds per button
+  const MIN_WITHDRAW = 1000;
+
+  // ====== Telegram WebApp context ======
+  const tg = window.Telegram?.WebApp;
+  if (tg) { try { tg.expand(); } catch(e){} }
+  const init = tg?.initDataUnsafe || {};
+  const me = init.user || {};
+  const UID = me.id || 'guest';
+  const UNAME = me.username ? '@' + me.username : (me.first_name || 'Guest');
+  const FULLNAME = [me.first_name, me.last_name].filter(Boolean).join(' ') || 'Guest';
+
+  // ====== Storage helpers (per user) ======
+  const k = (name) => `${name}_${UID}`;
+  const get = (name, fallback) => {
+    const raw = localStorage.getItem(k(name));
+    try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; }
+  };
+  const set = (name, val) => localStorage.setItem(k(name), JSON.stringify(val));
+
+  // ====== State ======
+  let balance = get('balance', 0);
+  let tasks = get('tasks', []); // {ts,label,amount}
+  let withdraws = get('withdraws', []); // {ts,amount,method,mobile,status}
+  let refs = get('refs', {count: 0});
+  let totals = get('totals', {earn: 0, with: 0});
+  let cooldown = get('cooldown', { }); // per-button last time
+
+  // ====== UI Elements ======
+  const $ = (q) => document.querySelector(q);
+  const $$ = (q) => Array.from(document.querySelectorAll(q));
+
+  function fmt(amount) { return `₦${Number(amount||0)}`; }
+  function nowFmt(){ return new Date().toLocaleString(); }
+
+  function renderAll(){
+    // header
+    $('#uname').textContent = FULLNAME || 'User';
+    $('#uid').textContent = `UID: ${UID}`;
+    $('#avatar').textContent = (FULLNAME||'U').charAt(0).toUpperCase();
+
+    // balances
+    $('#balance').textContent = fmt(balance);
+    $('#wBalance').textContent = fmt(balance);
+    $('#pBal').textContent = fmt(balance);
+    $('#kEarn').textContent = fmt(totals.earn);
+    $('#kWith').textContent = fmt(totals.with);
+    $('#kTasks').textContent = tasks.length;
+    $('#kRef').textContent = refs.count;
+    $('#lastAction').textContent = `update ${nowFmt()}`;
+
+    // profile
+    $('#pName').textContent = FULLNAME;
+    $('#pUser').textContent = UNAME;
+    $('#pUid').textContent = UID;
+
+    // histories
+    const tWrap = $('#taskHistory');
+    tWrap.innerHTML = tasks.slice().reverse().map(t => `<div class="item">🧩 <b>${t.label}</b> — ${fmt(t.amount)} <span class="muted" style="float:right">${new Date(t.ts).toLocaleString()}</span></div>`).join('') || '<div class="muted">No Tasks </div>';
+
+    const wWrap = $('#withHistory');
+    wWrap.innerHTML = withdraws.slice().reverse().map(w => `<div class="item">💳 ${fmt(w.amount)} → <b>${w.method}</b> (${w.mobile}) <span class="tag" style="margin-left:8px">${w.status}</span> <span class="muted" style="float:right">${new Date(w.ts).toLocaleString()}</span></div>`).join('') || '<div class="muted">No withdraw history</div>';
+
+    // withdraw form defaults
+    $('#wName').value = FULLNAME;
+    $('#wAmount').value = Math.min(balance, Math.max(MIN_WITHDRAW, balance));
+
+    // referral link
+    const deep = `https://t.me/${BOT_USERNAME}?start=ref_${UID}`;
+    $('#refLink').textContent = deep;
+    $('#refCount').textContent = refs.count;
+  }
+
+  // ====== Tabs ======
+  $$('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      $$('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const to = tab.getAttribute('data-tab');
+      ['home','task','team','withdraw','profile'].forEach(id => {
+        document.getElementById(`tab-${id}`).classList.toggle('hidden', id!==to);
+      })
+      renderAll();
+    })
+  })
+
+  // ====== Reward Logic ======
+  async function showAdAndReward(label){
+    // per-button cooldown
+    const key = `btn_${label}`;
+    const last = cooldown[key] || 0;
+    const diff = Date.now() - last;
+    if (diff < COOLDOWN_MS) {
+      const left = Math.ceil((COOLDOWN_MS - diff)/1000);
+      toast(`⏱️ অনুগ্রহ করে ${left}s পরে আবার চেষ্টা করুন`);
+      return;
+    }
+
+    try {
+      // call Monetag SDK function provided by script tag
+      if (typeof show_9732839 === 'function') {
+        await show_9732839();
+      }
+      // demo reward
+      balance += REWARD_PER_AD;
+      totals.earn += REWARD_PER_AD;
+      tasks.push({ ts: Date.now(), label, amount: REWARD_PER_AD });
+      cooldown[key] = Date.now();
+      persist();
+      renderAll();
+      toast(`✅ Ad viewed! +${fmt(REWARD_PER_AD)} যোগ হয়েছে`);
+    } catch (e) {
+      console.error('Ad error', e);
+      toast('⚠️ Failed, try again later.');
+    }
+  }
+
+  function persist(){
+    set('balance', balance);
+    set('tasks', tasks);
+    set('withdraws', withdraws);
+    set('refs', refs);
+    set('totals', totals);
+    set('cooldown', cooldown);
+  }
+
+  // Buttons wire-up (Home + Task)
+  [['#adBtn1','Task 1'],['#adBtn2','Task 2'],['#adBtn3','Task 3'],['#tAd1','Daily 1'],['#tAd2','Daily 2'],['#tAd3','Daily 3']]
+    .forEach(([sel,label])=> { const el=$(sel); if(el) el.addEventListener('click', ()=>showAdAndReward(label)) });
+
+  // Copy referral
+  $('#copyRef').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText($('#refLink').textContent);
+      toast('📋 Copy Successful');
+    } catch { toast('কপি সমর্থিত নয়'); }
+  });
+
+  // Withdraw submit
+  $('#withdrawForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('#wName').value.trim();
+    const mobile = $('#wMobile').value.trim();
+    const method = $('#wMethod').value.trim();
+    const amount = parseInt($('#wAmount').value, 10) || 0;
+    const msg = $('#wMsg');
+
+    if (amount < MIN_WITHDRAW) { msg.textContent = `Minimum ${fmt(MIN_WITHDRAW)} প্রয়োজন`; msg.className='help danger'; return; }
+    if (amount > balance) { msg.textContent = `You do not have enough balance.`; msg.className='help danger'; return; }
+
+    // Record locally
+    const rec = { ts: Date.now(), amount, method, mobile, status: 'Pending' };
+    withdraws.push(rec);
+    balance -= amount;
+    totals.with += amount;
+    persist();
+    renderAll();
+
+    // Notify to private channel via Bot API (demo; server-side recommended)
+    const text = `📥 <b>Withdraw Request</b>%0A👤 Name: ${encodeURIComponent(name)}%0A🆔 UID: ${UID}%0A💳 Method: ${encodeURIComponent(method)}%0A📱 Mobile: ${encodeURIComponent(mobile)}%0A💰 Amount: ${amount}%0A⏰ ${encodeURIComponent(new Date().toLocaleString())}`;
+    try {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${PRIVATE_CHANNEL_ID}&parse_mode=HTML&text=${text}`;
+      await fetch(url, { method: 'GET' });
+      $('#wMsg').textContent = '✅ Successful Submit';
+      $('#wMsg').className = 'help success';
+    } catch (e) {
+      console.warn('Telegram notify failed', e);
+      $('#wMsg').textContent = '⚠️ Notification failed, please try again later.';
+      $('#wMsg').className = 'help danger';
+    }
+  });
+
+  // Simple toast
+  function toast(t){
+    let el = document.getElementById('toast');
+    if(!el){ el = document.createElement('div'); el.id='toast'; document.body.appendChild(el);
+      Object.assign(el.style,{position:'fixed',left:'50%',bottom:'90px',transform:'translateX(-50%)',background:'rgba(3,7,18,.9)',color:'#e7f0ff',padding:'10px 14px',border:'1px solid rgba(148,163,184,.25)',borderRadius:'12px',zIndex:99,boxShadow:'0 10px 30px rgba(0,0,0,.4)'}); }
+    el.textContent = t; el.style.opacity='1';
+    clearTimeout(window.__tto); window.__tto=setTimeout(()=>{ el.style.opacity='0'; }, 1600);
+  }
+
+  // Handle start_param for referrals (basic demo)
+  (function handleStartParam(){
+    const sp = init.start_param || '';
+    if (sp.startsWith('ref_')){
+      const refBy = sp.split('ref_')[1];
+      // Only count once per UID
+      const flagged = get('referredBy', null);
+      if (!flagged) {
+        set('referredBy', refBy);
+        // Send a simple ping to channel so you can award on admin side if desired
+        const text = `👥 <b>New Referral</b>%0A👤 User: ${encodeURIComponent(FULLNAME)} (${UID})%0A🔗 RefBy: ${encodeURIComponent(refBy)}`;
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${PRIVATE_CHANNEL_ID}&parse_mode=HTML&text=${text}`);
+      }
+    }
+  })();
+
+  // Init render
+  renderAll();
+</script>
 </body>
 </html>
