@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src='//libtl.com/sdk.js' data-zone='9732839' data-sdk='show_9732839'></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earning Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f8f8;
+            color: #333;
+            padding: 10px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background-color: #0088cc;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .user-info {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .balance {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0088cc;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .option-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .option-card:active {
+            transform: scale(0.98);
+            background-color: #f0f0f0;
+        }
+        
+        .option-card i {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #0088cc;
+        }
+        
+        .daily-bonus {
+            background-color: #ff9500;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .bonus-button {
+            background-color: white;
+            color: #ff9500;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .bonus-button:disabled {
+            background-color: #ff9500;
+            color: white;
+            opacity: 0.7;
+        }
+        
+        .task-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .task-reward {
+            color: #0088cc;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .task-btn {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .task-btn:disabled {
+            background-color: #8bc34a;
+            cursor: default;
+        }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        
+        .submit-btn {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .referral-link {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        .stats {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .stats h3 {
+            margin-bottom: 10px;
+            color: #0088cc;
+        }
+        
+        .stats p {
+            margin: 5px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Telegram-like animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .page {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Main Page -->
+    <div class="container" id="main-page">
+        <header>
+            <div class="back-button hidden" id="main-back-btn"><i class="fas fa-arrow-left"></i></div>
+            <h1>Earning Bot</h1>
+        </header>
+        
+        <div class="user-info">
+            <div>
+                <div>Welcome, User</div>
+                <div class="balance">Balance: $10.50</div>
+            </div>
+            <div>
+                <i class="fas fa-user-circle" style="font-size: 2rem; color: #0088cc;"></i>
+            </div>
+        </div>
+        
+        <div class="daily-bonus">
+            <h3>Daily Check-in Bonus</h3>
+            <p>Claim your daily reward!</p>
+            <button id="claim-btn" class="bonus-button">Claim $0.50</button>
+        </div>
+        
+        <div class="options-grid">
+            <div class="option-card" onclick="showPage('home-page')">
+                <i class="fas fa-home"></i>
+                <h3>Home</h3>
+                <p>Main dashboard</p>
+            </div>
+            
+            <div class="option-card" onclick="showPage('tasks-page')">
+                <i class="fas fa-ad"></i>
+                <h3>Ad Tasks</h3>
+                <p>Complete ads & earn</p>
+            </div>
+            
+            <div class="option-card" onclick="showPage('referral-page')">
+                <i class="fas fa-users"></i>
+                <h3>Referral</h3>
+                <p>Invite friends & earn</p>
+            </div>
+            
+            <div class="option-card" onclick="showPage('withdraw-page')">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Withdraw</h3>
+                <p>Cash out your earnings</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Home Page -->
+    <div class="container page hidden" id="home-page">
+        <header>
+            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
+            <h1>Dashboard</h1>
+        </header>
+        
+        <div class="stats">
+            <h3>Your Stats</h3>
+            <p>Total Earnings: $25.30</p>
+            <p>Tasks Completed: 12</p>
+            <p>Referrals: 3</p>
+        </div>
+        
+        <div class="option-card" onclick="showPage('profile-page')">
+            <i class="fas fa-user"></i>
+            <h3>Profile</h3>
+            <p>View your account details</p>
+        </div>
+        
+        <div class="option-card" onclick="showPage('settings-page')">
+            <i class="fas fa-cog"></i>
+            <h3>Settings</h3>
+            <p>Configure app preferences</p>
+        </div>
+    </div>
+    
+    <!-- Tasks Page -->
+    <div class="container page hidden" id="tasks-page">
+        <header>
+            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
+            <h1>Ad Tasks</h1>
+        </header>
+        
+        <p style="margin: 15px 0;">Complete these tasks to earn money</p>
+        
+        <div class="task-item">
+            <h4>Watch Video Ad</h4>
+            <p>Watch a 15-second video advertisement</p>
+            <div class="task-reward">Reward: $0.10</div>
+            <button class="task-btn" onclick="startTask(this, 'Watch Video Ad', '$0.10')">Start Task</button>
+        </div>
+        
+        <div class="task-item">
+            <h4>Install App</h4>
+            <p>Install and open the recommended app</p>
+            <div class="task-reward">Reward: $0.50</div>
+            <button class="task-btn" onclick="startTask(this, 'Install App', '$0.50')">Start Task</button>
+        </div>
+        
+        <div class="task-item">
+            <h4>Survey</h4>
+            <p>Complete a short survey (2-3 minutes)</p>
+            <div class="task-reward">Reward: $0.30</div>
+            <button class="task-btn" onclick="startTask(this, 'Survey', '$0.30')">Start Task</button>
+        </div>
+    </div>
+    
+    <!-- Referral Page -->
+    <div class="container page hidden" id="referral-page">
+        <header>
+            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
+            <h1>Referral Program</h1>
+        </header>
+        
+        <div class="stats">
+            <h3>Invite Friends</h3>
+            <p>Earn 20% of your referrals' earnings!</p>
+            
+            <div class="form-group">
+                <label>Your Referral Link:</label>
+                <div class="referral-link">https://t.me/earning_bot?start=ref123</div>
+                <button class="submit-btn" onclick="copyToClipboard('https://t.me/earning_bot?start=ref123')">Copy Link</button>
+            </div>
+            
+            <h3 style="margin-top: 20px;">Your Referrals</h3>
+            <p>Total Referrals: 3</p>
+            <p>Earned from Referrals: $4.20</p>
+        </div>
+    </div>
+    
+    <!-- Withdraw Page -->
+    <div class="container page hidden" id="withdraw-page">
+        <header>
+            <div class="back-button" onclick="showPage('main-page')"><i class="fas fa-arrow-left"></i></div>
+            <h1>Withdraw Earnings</h1>
+        </header>
+        
+        <div class="stats">
+            <p>Minimum withdrawal amount: $5.00</p>
+            <p>Available balance: $10.50</p>
+            
+            <div class="form-group">
+                <label>Amount to Withdraw ($):</label>
+                <input type="number" min="5" max="10.5" step="0.01" placeholder="Enter amount" id="withdraw-amount">
+            </div>
+            
+            <div class="form-group">
+                <label>Payment Method:</label>
+                <select id="payment-method">
+                    <option>PayPal</option>
+                    <option>Bank Transfer</option>
+                    <option>USDT (TRC20)</option>
+                    <option>Telegram Wallet</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Payment Email/Account:</label>
+                <input type="text" placeholder="Enter your payment details" id="payment-details">
+            </div>
+            
+            <button class="submit-btn" onclick="requestWithdrawal()">Request Withdrawal</button>
+        </div>
+    </div>
+    
+    <!-- Profile Page -->
+    <div class="container page hidden" id="profile-page">
+        <header>
+            <div class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i></div>
+            <h1>Your Profile</h1>
+        </header>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <i class="fas fa-user-circle" style="font-size: 4rem; color: #0088cc;"></i>
+            <h3>User123</h3>
+            <p>Member since: Jan 2023</p>
+        </div>
+        
+        <div class="stats">
+            <h3>Account Information</h3>
+            <p>Email: user@example.com</p>
+            <p>Country: United States</p>
+        </div>
+        
+        <button class="submit-btn" style="background-color: #f44336;" onclick="logout()">Logout</button>
+    </div>
+    
+    <!-- Settings Page -->
+    <div class="container page hidden" id="settings-page">
+        <header>
+            <div class="back-button" onclick="showPage('home-page')"><i class="fas fa-arrow-left"></i></div>
+            <h1>Settings</h1>
+        </header>
+        
+        <div class="stats">
+            <div class="form-group">
+                <label>Notification Preferences</label>
+                <div style="margin-top: 10px;">
+                    <input type="checkbox" id="email-notif" checked>
+                    <label for="email-notif">Email Notifications</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="push-notif" checked>
+                    <label for="push-notif">Push Notifications</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Theme</label>
+                <select id="theme-selector">
+                    <option>Light</option>
+                    <option>Dark</option>
+                    <option>System Default</option>
+                </select>
+            </div>
+            
+            <button class="submit-btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+    </div>
+    
+    <script>
+        // Show specific page and hide others
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+        
+        // Copy text to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard: ' + text);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+        
+        // Claim daily bonus
+        document.getElementById('claim-btn').addEventListener('click', function() {
+            alert('Daily bonus claimed! $0.50 has been added to your balance.');
+            this.textContent = 'Claimed Today';
+            this.disabled = true;
+        });
+        
+        // Start a task
+        function startTask(button, taskName, reward) {
+            alert(`Starting task: ${taskName}\nPlease complete the task to earn ${reward}`);
+            
+            // Simulate task completion after 3 seconds
+            setTimeout(() => {
+                alert(`Task completed! ${reward} has been added to your balance.`);
+                button.textContent = 'Completed';
+                button.disabled = true;
+            }, 3000);
+        }
+        
+        // Request withdrawal
+        function requestWithdrawal() {
+            const amount = document.getElementById('withdraw-amount').value;
+            const method = document.getElementById('payment-method').value;
+            const details = document.getElementById('payment-details').value;
+            
+            if (!amount || amount < 5) {
+                alert('Minimum withdrawal amount is $5.00');
+                return;
+            }
+            
+            if (!details) {
+                alert('Please enter your payment details');
+                return;
+            }
+            
+            alert(`Withdrawal request submitted!\nAmount: $${amount}\nMethod: ${method}\nDetails: ${details}\nProcessing may take 1-3 business days.`);
+            showPage('main-page');
+        }
+        
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('You have been logged out.');
+                showPage('main-page');
+            }
+        }
+        
+        // Save settings
+        function saveSettings() {
+            const emailNotif = document.getElementById('email-notif').checked;
+            const pushNotif = document.getElementById('push-notif').checked;
+            const theme = document.getElementById('theme-selector').value;
+            
+            alert('Settings saved successfully!');
+            showPage('home-page');
+        }
+        
+        // Initialize - show main page
+        showPage('main-page');
+    </script>
+</body>
+</html>
