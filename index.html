@@ -1,548 +1,780 @@
 <!DOCTYPE html>
-<html lang="bn">
+
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Monetag Mini App – Earn</title>
-  <meta name="theme-color" content="#0ea5e9" />
-  <style>
-    :root {
-      --bg: #0b1220;
-      --card: #111a2b;
-      --muted: #9fb0c9;
-      --text: #e7f0ff;
-      --primary: #0ea5e9; /* sky-500 */
-      --primary-600: #0284c7;
-      --accent: #22d3ee; /* cyan-400 */
-      --danger: #ef4444;
-      --success: #22c55e;
-      --shadow: 0 10px 30px rgba(2,132,199,.25);
-      --radius: 18px;
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 50% -10%, #0b2550 0%, #0b1220 60%);
-      color: var(--text);
-    }
-    .app { display: grid; grid-template-rows: auto 1fr auto; height: 100dvh; }
 
-    /* Header */
-    .header {
-      position: sticky; top: 0; z-index: 5;
-      padding: 14px 16px 8px; backdrop-filter: saturate(140%) blur(8px);
-      background: linear-gradient(180deg, rgba(2,12,26,.85), rgba(2,12,26,.35) 70%, transparent);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .row { display: flex; align-items: center; gap: 12px; }
-    .grow { flex: 1; }
-    .user-chip {
-      display: inline-flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 999px;
-      background: linear-gradient(90deg, rgba(14,165,233,.18), rgba(34,211,238,.10));
-      border: 1px solid rgba(14,165,233,.35);
-      box-shadow: var(--shadow);
-    }
-    .avatar { width: 36px; height: 36px; border-radius: 999px; background: #0b1d3a; display: grid; place-items: center; font-weight: 700; }
+    <meta charset="UTF-8">
 
-    /* Cards */
-    .container { padding: 14px 14px 92px; }
-    .grid { display: grid; gap: 12px; }
-    .card {
-      background: linear-gradient(180deg, rgba(17,26,43,.9), rgba(10,16,28,.92));
-      border: 1px solid rgba(148,163,184,.15);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 14px;
-    }
-    .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 700; letter-spacing: .2px; }
-    .muted { color: var(--muted); font-size: 13px; }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    .balance {
-      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px;
-      background: radial-gradient(500px 200px at 20% -40%, rgba(2,132,199,.3), transparent 60%),
-                  radial-gradient(400px 160px at 120% -60%, rgba(34,211,238,.25), transparent 60%),
-                  linear-gradient(180deg, rgba(2,8,23,.7), rgba(2,8,23,.95));
-      border: 1px solid rgba(56,189,248,.35);
-    }
-    .balance .amount { font-size: 28px; font-weight: 800; letter-spacing: .5px; }
-    .pill { display:inline-block; padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid rgba(255,255,255,.12); }
+    <title>Earning Technology</title>
 
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 100%; height: 56px; border-radius: 14px;
-      border: 1px solid rgba(14,165,233,.5); background: linear-gradient(180deg, var(--primary), var(--primary-600));
-      color: white; font-weight: 700; letter-spacing: .2px; cursor: pointer;
-      box-shadow: 0 8px 18px rgba(14,165,233,.35);
-      transition: transform .05s ease, filter .2s ease; user-select: none;
-    }
-    .btn:active { transform: translateY(1px) scale(.995); }
-    .btn[disabled] { opacity: .6; filter: saturate(.4); pointer-events: none; }
+    
 
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    <!-- 1. Monetage SDK Script -->
 
-    .list { display: grid; gap: 10px; }
-    .item { padding: 12px; border-radius: 12px; border: 1px solid rgba(148,163,184,.15); background: #0d1628; display: grid; gap: 4px; }
+    <<script src='//libtl.com/sdk.js' data-zone='9732839' data-sdk='show_9732839'></script>
 
-    .form { display: grid; gap: 10px; }
-    .field { display: grid; gap: 6px; }
-    .input, .select, .textarea {
-      height: 46px; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(148,163,184,.25);
-      outline: none; background: #0b1426; color: var(--text); font-size: 15px;
-    }
-    .textarea { height: 90px; resize: vertical; }
-    .help { font-size: 12px; color: var(--muted); }
-    .danger { color: var(--danger); }
-    .success { color: var(--success); }
 
-    /* Tabs */
-    .tabs { position: fixed; left: 0; right: 0; bottom: 0; backdrop-filter: blur(10px) saturate(140%);
-      background: linear-gradient(180deg, rgba(3,7,18,.2), rgba(3,7,18,.75)); border-top: 1px solid rgba(255,255,255,.08);
-      display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 6px; gap: 6px; z-index: 5; }
-    .tab { display: grid; place-items: center; gap: 4px; padding: 8px 6px; border-radius: 12px; color: var(--muted); font-size: 11.5px; }
-    .tab.active { color: var(--text); background: rgba(14,165,233,.12); border: 1px solid rgba(14,165,233,.35); }
+    <!-- 2. Telegram Web App Script -->
 
-    .hidden { display: none !important; }
-    .copy { cursor: pointer; }
-    .tag { font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(148,163,184,.2); }
-    .kpi { display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-    .kbox { background:#0d1628; border:1px solid rgba(148,163,184,.15); border-radius:12px; padding:10px; }
-    .kbox .v { font-size:16px; font-weight:800 }
-    .kbox .l { font-size:12px; color:var(--muted) }
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    a { color: var(--accent); text-decoration: none; }
-  </style>
-  
-  <!-- Telegram Mini App JS -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
-  <!-- Monetag SDK (replace zone if needed) -->
-  <script src='//libtl.com/sdk.js' data-zone='9732839' data-sdk='show_9732839'></script>
+
+
+    <style>
+
+        /* CSS Code (No changes needed here) */
+
+        :root {
+
+            --tg-theme-bg-color: #121212; --tg-theme-text-color: #e0e0e0; --tg-theme-button-color: #007bff;
+
+            --tg-theme-button-text-color: #ffffff; --tg-theme-hint-color: #8a8a8a; --success-color: #28a745;
+
+            --warning-color: #ffc107; --danger-color: #dc3545; --secondary-bg-color: #1e1e1e; --border-color: #333333;
+
+        }
+
+        body {
+
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0;
+
+            padding: 20px 15px 90px 15px; background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color);
+
+            display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100vh; box-sizing: border-box;
+
+        }
+
+        .container { width: 100%; max-width: 500px; }
+
+        .view { display: none; width: 100%; animation: fadeIn 0.3s ease-in-out; }
+
+        #home-view { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header { margin-bottom: 25px; }
+
+        .header h1 { font-size: 32px; font-weight: 700; margin-bottom: 5px; color: #ffffff; }
+
+        .header p { color: var(--tg-theme-hint-color); font-size: 16px; }
+
+        .card {
+
+            background-color: var(--secondary-bg-color); padding: 25px; border-radius: 16px; margin-bottom: 25px;
+
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color);
+
+        }
+
+        .card h2 {
+
+            margin: 0 0 12px 0; font-size: 16px; color: var(--tg-theme-hint-color); font-weight: 500;
+
+            text-transform: uppercase; letter-spacing: 0.5px;
+
+        }
+
+        .balance-amount { font-size: 42px; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
+
+        .ad-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; }
+
+        .ad-info-item h3 { font-size: 20px; font-weight: 600; margin: 0 0 5px 0; color: #ffffff; }
+
+        .ad-info-item p { font-size: 14px; color: var(--tg-theme-hint-color); margin: 0; }
+
+        .ad-buttons { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+
+        .btn {
+
+            width: 100%; padding: 16px; font-size: 18px; font-weight: 600; border: none; border-radius: 12px; cursor: pointer;
+
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+
+            background: linear-gradient(145deg, var(--tg-theme-button-color), #0056b3); color: var(--tg-theme-button-text-color);
+
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+
+        }
+   .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3); }
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn:disabled { background: #555; color: #888; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        #mainWithdrawBtn { background: linear-gradient(145deg, var(--success-color), #1e7e34); box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2); }
+
+        #mainWithdrawBtn:disabled { background: #555; box-shadow: none; }
+
+        .status-message {
+
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px;
+
+            padding: 12px 15px; border-radius: 10px; font-weight: 500; display: none; animation: fadeIn 0.3s;
+
+            z-index: 1000; box-sizing: border-box;
+
+        }
+
+        .success { display: block; background-color: rgba(40, 167, 69, 0.25); border-left: 5px solid var(--success-color); color: var(--success-color); }
+
+        .error { display: block; background-color: rgba(220, 53, 69, 0.25); border-left: 5px solid var(--danger-color); color: var(--danger-color); }
+
+        .info { display: block; background-color: rgba(0, 123, 255, 0.25); border-left: 5px solid var(--tg-theme-button-color); color: #008cff; }
+
+        .footer-nav {
+
+            position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--secondary-bg-color); display: flex;
+
+            justify-content: space-around; padding: 10px 0; box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+
+            border-top: 1px solid var(--border-color); z-index: 999;
+
+        }
+
+        .nav-btn {
+
+            background: none; border: none; color: var(--tg-theme-hint-color); display: flex; flex-direction: column;
+
+            align-items: center; font-size: 12px; font-weight: 500; cursor: pointer; padding: 5px 15px;
+
+            border-radius: 12px; transition: color 0.2s, background-color 0.2s;
+
+        }
+
+        .nav-btn.active { color: var(--tg-theme-button-color); }
+
+        .nav-btn:hover:not(.active) { color: #ffffff; }
+
+        .nav-btn .icon { width: 28px; height: 28px; margin-bottom: 4px; }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+
+        .input-group label { display: block; margin-bottom: 8px; color: var(--tg-theme-hint-color); font-size: 14px; font-weight: 500; }
+
+        .input-group input {
+
+            width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color);
+
+            background-color: #333; color: var(--tg-theme-text-color); font-size: 16px; box-sizing: border-box;
+
+        }
+
+        .input-group input:focus { outline: none; border-color: var(--tg-theme-button-color); box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); }
+
+        #referralLink {
+
+            background-color: #111; padding: 15px; border-radius: 10px; word-wrap: break-word;
+
+            border: 1px dashed var(--tg-theme-hint-color); margin-top: 15px; cursor: pointer; color: #e0e0e0;
+
+            transition: background-color 0.2s; text-align: left;
+
+        }
+
+        #referralLink:hover { background-color: #2a2a2a; }
+
+        .admin-panel {
+
+            display: none; margin-top: 30px; padding: 15px; border: 1px solid var(--warning-color);
+
+            border-radius: 10px; background-color: rgba(255, 193, 7, 0.1);
+
+        }
+
+        .admin-panel h3 { color: var(--warning-color); margin-top: 0; }
+
+    </style>
+
 </head>
+
 <body>
-<div class="app">
-  <!-- Header -->
-  <header class="header">
-    <div class="row">
-      <div class="user-chip">
-        <div class="avatar" id="avatar">👤</div>
-        <div>
-          <div id="9732839" style="font-weight:700">User</div>
-          <div class="muted" id="uid">UID: -</div>
-        </div>
-      </div>
-      <div class="grow"></div>
-      <span class="tag" id="vipTag">VIP: Free</span>
-    </div>
-  </header>
 
-  <!-- Main Content -->
-  <main class="container">
-    <!-- HOME TAB -->
-    <section id="tab-home" class="grid">
-      <div class="card balance">
-        <div>
-          <div class="muted">Current balance</div>
-          <div class="amount" id="balance">₦0</div>
-          <div class="muted" id="lastAction">Last update</div>
-        </div>
-        <div>
-          <span class="pill">Minimum Withdrawal: ₦1000</span>
-        </div>
-      </div>
+<script type='text/javascript' src='//pl26604097.profitableratecpm.com/0f/56/94/0f5694f9b53dd9db6b20e82218735b99.js'></script>
 
-      <div class="grid">
-        <div class="row-2">
-          <button class="btn" id="9732839">🎯 Ad Task 1</button>
-          <button class="btn" id="9732839">🚀 Ad Task 2</button>
-        </div>
-        <button class="btn" id="adBtn3">💎 Ad Task 3</button>
-        <div class="help">👉<b>₦1</b> will be automatically added after watching each ad. Repeated spamming will cause a cooldown. </div>
-      </div>
+    <div class="container">
 
-      <div class="grid">
-        <div class="kpi">
-          <div class="kbox"><div class="v" id="kEarn">₦0</div><div class="l">Total income</div></div>
-          <div class="kbox"><div class="v" id="kTasks">0</div><div class="l">Complete</div></div>
-          <div class="kbox"><div class="v" id="kRef">0</div><div class="l">Refer </div></div>
-          <div class="kbox"><div class="v" id="kWith">₦0</div><div class="l">Total withdrawal</div></div>
-        </div>
-      </div>
+        <!-- Home / Task View -->
 
-      <div class="card">
-        <h3>How to work?</h3>
-        <div class="list">
-          <div class="item">• Click on the task button to view the ad. </div>
-          <div class="item">• You will get<b>₦1</b>for each valid view</div>
-          <div class="item">• You can withdraw if you have 1000 taka.</div>
-        </div>
-      </div>
-    </section>
+        <div id="home-view" class="view">
 
-    <!-- TASK TAB -->
-    <section id="tab-task" class="grid hidden">
-      <div class="card">
-        <h3>Daily Tasks </h3>
-        <div class="grid">
+            <div class="header"><h1>Earning Technology</h1><p>Watch Ads and Earn USDT</p></div>
 
+            <div class="card">
 
-// Rewarded interstitial
+                <h2>Current Balance</h2>
 
-show_9732839().then(() => {
-    // You need to add your user reward function here, which will be executed after the user watches the ad.
-    // For more details, please refer to the detailed instructions.
-    alert('You have seen an ad!');
-})
+                <div class="balance-amount" id="balanceDisplay">USDT 0.00</div>
 
-        
+                <div class="ad-info-grid">
 
-// Rewarded Popup
+                    <div class="ad-info-item"><h3 id="adCountDisplay">0</h3><p>Total Ads Watched</p></div>
 
-show_9732839('pop').then(() => {
-    // user watch ad till the end or close it in interstitial format
-    // your code to reward user for rewarded format
-}).catch(e => {
-    // user get error during playing ad
-    // do nothing or whatever you want
-})
+                    <div class="ad-info-item"><h3 id="dailyAdCountDisplay">0 / 1000</h3><p>Today's Ads</p></div>
 
-        
+                </div>
 
-// In-App Interstitial
-
-show_9732839({
-  type: 'inApp',
-  inAppSettings: {
-    frequency: 2,
-    capping: 0.1,
-    interval: 30,
-    timeout: 5,
-    everyPage: false
-  }
-})
-
-/*
-This value is decoded as follows:
-- show automatically 2 ads
-  within 0.1 hours (6 minutes)
-  with a 30-second interval between them
-  and a 5-second delay before the first one is shown.
-  The last digit, 0, means that the session will be saved when you navigate between pages.
-  If you set the last digit as 1, then at any transition between pages,
-  the session will be reset, and the ads will start again.
-*/
-
-
-          <button class="btn" id="tAd1">🎯 Watch Ad & Earn</button>
-          <button class="btn" id="tAd2">🚀 Watch Ad & Earn</button>
-          <button class="btn" id="tAd3">💎 Watch Ad & Earn</button>
-          <div class="help">Regular use may cause a cooldown (0 seconds).</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Tasks History</h3>
-        <div id="taskHistory" class="list"></div>
-      </div>
-    </section>
-
-    <!-- TEAM TAB -->
-    <section id="tab-team" class="grid hidden">
-      <div class="card">
-        <h3>Invite & Earn</h3>
-        <div class="list">
-          <div class="item">
-            <div class="muted">Your referral link</div>
-            <div class="row" style="justify-content:space-between; gap:8px; align-items:center;">
-              <div id="refLink" class="muted" style="word-break:break-all"></div>
-              <button class="btn" id="copyRef" style="width:auto; padding:0 14px; height:40px">📋 Copy</button>
             </div>
-          </div>
-          <div class="item"><b id="refCount">0</b> John referred users</div>
-          <div class="item">Every valid referral = <b>₦0</b> bonus</div>
+
+            <div class="ad-buttons"><button class="btn" id="rewardedBtn">Watch Ad (+0.01 USDT)</button></div>
+
+            <button class="btn" id="mainWithdrawBtn" disabled>Reach 10.00 USDT to Withdraw</button>
+
         </div>
-      </div>
-    </section>
 
-    <!-- WITHDRAW TAB -->
-    <section id="tab-withdraw" class="grid hidden">
-      <div class="card balance">
-        <div>
-          <div class="muted">Available for withdrawal</div>
-          <div class="amount" id="wBalance">₦ 0</div>
+
+
+        <!-- Withdraw View -->
+
+        <div id="withdraw-view" class="view">
+
+            <div class="header"><h1>Withdraw</h1><p>Request your earnings</p></div>
+
+            <div class="card">
+
+                <h2>Your Balance</h2>
+
+                <div class="balance-amount" id="withdrawBalanceDisplay">USDT 0.00</div>
+
+                <p style="color: var(--tg-theme-hint-color); margin-top: 15px;">Minimum withdrawal is 10.00 USDT.</p>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Payment Details</h2>
+
+                <div class="input-group">
+
+                    <label for="paymentAddress">Your USDT Wallet Address (TRC20)</label>
+
+                    <input type="text" id="paymentAddress" placeholder="e.g., T... (TRC20 Address)">
+
+                </div>
+
+                <button class="btn" id="finalWithdrawBtn" disabled>Withdraw</button>
+
+            </div>
+
         </div>
-        <div><span class="pill">Minimum: ₦1000</span></div>
-      </div>
 
-      <div class="card">
-        <h3>Withdrawal form</h3>
-        <form class="form" id="withdrawForm">
-          <div class="field">
-            <label>Name</label>
-            <input class="input" id="wName" placeholder="আপনার নাম" required />
-          </div>
-          <div class="field">
-            <label>Wallet address</label>
-            <input class="input" id="wMobile" placeholder="Enter Wallet address" required />
-          </div>
-          <div class="field">
-            <label>Payment system</label>
-            <select class="select" id="wMethod" required>
-              <option value="">Select</option>
-              <option>OPAY</option>
-              <option>PALMPAY</option>
-              <option>KUDA</option>
-              <option>MONIY POINT </option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Amount</label>
-            <input type="number" min="1000" class="input" id="wAmount" placeholder="₦1000+" required />
-            <div class="help">Minimum ₦1000. Do not request more than the balance.</div>
-          </div>
-          <button class="btn" type="submit" id="wSubmit">💸 Withdraw Request</button>
-          <div id="wMsg" class="help"></div>
-        </form>
-      </div>
+        
 
-      <div class="card">
-        <h3>Withdrawal history</h3>
-        <div id="withHistory" class="list"></div>
-      </div>
-    </section>
+        <!-- Referral View -->
 
-    <!-- PROFILE TAB -->
-    <section id="tab-profile" class="grid hidden">
-      <div class="card">
-        <h3>Profile</h3>
-        <div class="list">
-          <div class="item"><b>Name:</b> <span id="pName">-</span></div>
-          <div class="item"><b>User:</b> <span id="pUser">-</span></div>
-          <div class="item"><b>UID:</b> <span id="pUid">-</span></div>
-          <div class="item"><b>Balance:</b> <span id="pBal">₦0</span></div>
-          <div class="item">
-            <div class="muted">Note: This is our trusted free income Telegram bot, here you will get 100% withdrawal payment by working.</div>
-          </div>
+        <div id="referral-view" class="view">
+
+            <div class="header"><h1>Referrals</h1><p>Invite friends and earn more!</p></div>
+
+            <div class="card">
+
+                <h2>Your Referral Stats</h2>
+
+                <div class="ad-info-grid">
+
+                    <div class="ad-info-item"><h3 id="referralCountDisplay">0</h3><p>Total Referrals</p></div>
+
+                    <div class="ad-info-item"><h3 id="referralBonusDisplay">USDT 0.00</h3><p>Referral Earnings</p></div>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Your Referral Link</h2>
+
+                <p>Share this link with your friends. You get 0.5 USDT for each verified friend who joins!</p>
+
+                <p id="referralLink" title="Click to copy"></p>
+
+                <p style="font-size:12px; color:var(--tg-theme-hint-color); margin-top:15px;">Note: Referral rewards require backend processing and will be credited to your balance after verification.</p>
+
+            </div>
+
         </div>
-      </div>
-    </section>
-  </main>
 
-  <!-- Tabs -->
-  <nav class="tabs">
-    <div class="tab active" data-tab="home">🏠<div>Home </div></div>
-    <div class="tab" data-tab="task">🧩<div>Tasks </div></div>
-    <div class="tab" data-tab="team">👥<div>Team</div></div>
-    <div class="tab" data-tab="withdraw">💳<div>Withdraw</div></div>
-    <div class="tab" data-tab="profile">👤<div>Profile</div></div>
-  </nav>
-</div>
 
-<script>
-  // ====== CONFIG (Replace with your details) ======
-  const BOT_TOKEN = '8322375043:AAEnXPNxuLeOoF-fg3QkcfHizg94jeYtphI; // ⚠️ Exposed in client – for demo only
-  const PRIVATE_CHANNEL_ID = -1002699265904; // your private channel ID
-  const BOT_USERNAME = '@Earning_25_bot'; // for referral link
-  const REWARD_PER_AD = 1; // ₦1 per valid ad view (demo)
-  const COOLDOWN_MS = 20000; // 20 seconds per button
-  const MIN_WITHDRAW = 1000;
 
-  // ====== Telegram WebApp context ======
-  const tg = window.Telegram?.WebApp;
-  if (tg) { try { tg.expand(); } catch(e){} }
-  const init = tg?.initDataUnsafe || {};
-  const me = init.user || {};
-  const UID = me.id || 'guest';
-  const UNAME = me.username ? '@' + me.username : (me.first_name || 'Guest');
-  const FULLNAME = [me.first_name, me.last_name].filter(Boolean).join(' ') || 'Guest';
+        <!-- Common Elements -->
 
-  // ====== Storage helpers (per user) ======
-  const k = (name) => `${name}_${UID}`;
-  const get = (name, fallback) => {
-    const raw = localStorage.getItem(k(name));
-    try { return raw ? JSON.parse(raw) : fallback; } catch { return fallback; }
-  };
-  const set = (name, val) => localStorage.setItem(k(name), JSON.stringify(val));
+        <div class="status-message" id="statusMessage"></div>
 
-  // ====== State ======
-  let balance = get('balance', 0);
-  let tasks = get('tasks', []); // {ts,label,amount}
-  let withdraws = get('withdraws', []); // {ts,amount,method,mobile,status}
-  let refs = get('refs', {count: 0});
-  let totals = get('totals', {earn: 0, with: 0});
-  let cooldown = get('cooldown', { }); // per-button last time
+        <div class="admin-panel" id="adminPanel"><h3>👑 Admin Panel</h3><p id="userInfo"></p></div>
 
-  // ====== UI Elements ======
-  const $ = (q) => document.querySelector(q);
-  const $$ = (q) => Array.from(document.querySelectorAll(q));
+    </div>
 
-  function fmt(amount) { return `₦${Number(amount||0)}`; }
-  function nowFmt(){ return new Date().toLocaleString(); }
 
-  function renderAll(){
-    // header
-    $('#uname').textContent = FULLNAME || 'User';
-    $('#uid').textContent = `UID: ${UID}`;
-    $('#avatar').textContent = (FULLNAME||'U').charAt(0).toUpperCase();
 
-    // balances
-    $('#balance').textContent = fmt(balance);
-    $('#wBalance').textContent = fmt(balance);
-    $('#pBal').textContent = fmt(balance);
-    $('#kEarn').textContent = fmt(totals.earn);
-    $('#kWith').textContent = fmt(totals.with);
-    $('#kTasks').textContent = tasks.length;
-    $('#kRef').textContent = refs.count;
-    $('#lastAction').textContent = `update ${nowFmt()}`;
+    <!-- Footer Navigation -->
 
-    // profile
-    $('#pName').textContent = FULLNAME;
-    $('#pUser').textContent = UNAME;
-    $('#pUid').textContent = UID;
+    <footer class="footer-nav">
 
-    // histories
-    const tWrap = $('#taskHistory');
-    tWrap.innerHTML = tasks.slice().reverse().map(t => `<div class="item">🧩 <b>${t.label}</b> — ${fmt(t.amount)} <span class="muted" style="float:right">${new Date(t.ts).toLocaleString()}</span></div>`).join('') || '<div class="muted">No Tasks </div>';
+        <button class="nav-btn active" id="navHome"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span><span>Home</span></button>
 
-    const wWrap = $('#withHistory');
-    wWrap.innerHTML = withdraws.slice().reverse().map(w => `<div class="item">💳 ${fmt(w.amount)} → <b>${w.method}</b> (${w.mobile}) <span class="tag" style="margin-left:8px">${w.status}</span> <span class="muted" style="float:right">${new Date(w.ts).toLocaleString()}</span></div>`).join('') || '<div class="muted">No withdraw history</div>';
+        <button class="nav-btn" id="navWithdraw"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.31 8.91a1 1 0 0 0-1.42 0l-4.24 4.24-2.12-2.12a1 1 0 1 0-1.42 1.42l2.83 2.83a1 1 0 0 0 1.42 0l5-5a1 1 0 0 0 0-1.42zM20 12a8 8 0 1 1-8-8 8 8 0 0 1 8 8zm-2 0a6 6 0 1 0-6 6 6 6 0 0 0 6-6z"/></svg></span><span>Withdraw</span></button>
 
-    // withdraw form defaults
-    $('#wName').value = FULLNAME;
-    $('#wAmount').value = Math.min(balance, Math.max(MIN_WITHDRAW, balance));
+        <button class="nav-btn" id="navRefer"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V18h14v-1.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V18h6v-1.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span><span>Referrals</span></button>
 
-    // referral link
-    const deep = `https://t.me/${BOT_USERNAME}?start=ref_${UID}`;
-    $('#refLink').textContent = deep;
-    $('#refCount').textContent = refs.count;
-  }
+    </footer>
 
-  // ====== Tabs ======
-  $$('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      $$('.tab').forEach(t=>t.classList.remove('active'));
-      tab.classList.add('active');
-      const to = tab.getAttribute('data-tab');
-      ['home','task','team','withdraw','profile'].forEach(id => {
-        document.getElementById(`tab-${id}`).classList.toggle('hidden', id!==to);
-      })
-      renderAll();
-    })
-  })
 
-  // ====== Reward Logic ======
-  async function showAdAndReward(label){
-    // per-button cooldown
-    const key = `btn_${label}`;
-    const last = cooldown[key] || 0;
-    const diff = Date.now() - last;
-    if (diff < COOLDOWN_MS) {
-      const left = Math.ceil((COOLDOWN_MS - diff)/1000);
-      toast(`⏱️ অনুগ্রহ করে ${left}s পরে আবার চেষ্টা করুন`);
-      return;
-    }
 
-    try {
-      // call Monetag SDK function provided by script tag
-      if (typeof show_9732839 === 'function') {
-        await show_9732839();
-      }
-      // demo reward
-      balance += REWARD_PER_AD;
-      totals.earn += REWARD_PER_AD;
-      tasks.push({ ts: Date.now(), label, amount: REWARD_PER_AD });
-      cooldown[key] = Date.now();
-      persist();
-      renderAll();
-      toast(`✅ Ad viewed! +${fmt(REWARD_PER_AD)} যোগ হয়েছে`);
-    } catch (e) {
-      console.error('Ad error', e);
-      toast('⚠️ Failed, try again later.');
-    }
-  }
+    <script>
 
-  function persist(){
-    set('balance', balance);
-    set('tasks', tasks);
-    set('withdraws', withdraws);
-    set('refs', refs);
-    set('totals', totals);
-    set('cooldown', cooldown);
-  }
+        document.addEventListener('DOMContentLoaded', function () {
 
-  // Buttons wire-up (Home + Task)
-  [['#adBtn1','Task 1'],['#adBtn2','Task 2'],['#adBtn3','Task 3'],['#tAd1','Daily 1'],['#tAd2','Daily 2'],['#tAd3','Daily 3']]
-    .forEach(([sel,label])=> { const el=$(sel); if(el) el.addEventListener('click', ()=>showAdAndReward(label)) });
+            const tg = window.Telegram.WebApp;
 
-  // Copy referral
-  $('#copyRef').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText($('#refLink').textContent);
-      toast('📋 Copy Successful');
-    } catch { toast('কপি সমর্থিত নয়'); }
-  });
 
-  // Withdraw submit
-  $('#withdrawForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = $('#wName').value.trim();
-    const mobile = $('#wMobile').value.trim();
-    const method = $('#wMethod').value.trim();
-    const amount = parseInt($('#wAmount').value, 10) || 0;
-    const msg = $('#wMsg');
 
-    if (amount < MIN_WITHDRAW) { msg.textContent = `Minimum ${fmt(MIN_WITHDRAW)} প্রয়োজন`; msg.className='help danger'; return; }
-    if (amount > balance) { msg.textContent = `You do not have enough balance.`; msg.className='help danger'; return; }
+            // --- DOM Elements ---
 
-    // Record locally
-    const rec = { ts: Date.now(), amount, method, mobile, status: 'Pending' };
-    withdraws.push(rec);
-    balance -= amount;
-    totals.with += amount;
-    persist();
-    renderAll();
+            const balanceDisplay = document.getElementById('balanceDisplay'), adCountDisplay = document.getElementById('adCountDisplay'),
 
-    // Notify to private channel via Bot API (demo; server-side recommended)
-    const text = `📥 <b>Withdraw Request</b>%0A👤 Name: ${encodeURIComponent(name)}%0A🆔 UID: ${UID}%0A💳 Method: ${encodeURIComponent(method)}%0A📱 Mobile: ${encodeURIComponent(mobile)}%0A💰 Amount: ${amount}%0A⏰ ${encodeURIComponent(new Date().toLocaleString())}`;
-    try {
-      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${PRIVATE_CHANNEL_ID}&parse_mode=HTML&text=${text}`;
-      await fetch(url, { method: 'GET' });
-      $('#wMsg').textContent = '✅ Successful Submit';
-      $('#wMsg').className = 'help success';
-    } catch (e) {
-      console.warn('Telegram notify failed', e);
-      $('#wMsg').textContent = '⚠️ Notification failed, please try again later.';
-      $('#wMsg').className = 'help danger';
-    }
-  });
+                  dailyAdCountDisplay = document.getElementById('dailyAdCountDisplay'), rewardedBtn = document.getElementById('rewardedBtn'),
 
-  // Simple toast
-  function toast(t){
-    let el = document.getElementById('toast');
-    if(!el){ el = document.createElement('div'); el.id='toast'; document.body.appendChild(el);
-      Object.assign(el.style,{position:'fixed',left:'50%',bottom:'90px',transform:'translateX(-50%)',background:'rgba(3,7,18,.9)',color:'#e7f0ff',padding:'10px 14px',border:'1px solid rgba(148,163,184,.25)',borderRadius:'12px',zIndex:99,boxShadow:'0 10px 30px rgba(0,0,0,.4)'}); }
-    el.textContent = t; el.style.opacity='1';
-    clearTimeout(window.__tto); window.__tto=setTimeout(()=>{ el.style.opacity='0'; }, 1600);
-  }
+                  mainWithdrawBtn = document.getElementById('mainWithdrawBtn'), statusMessage = document.getElementById('statusMessage'),
 
-  // Handle start_param for referrals (basic demo)
-  (function handleStartParam(){
-    const sp = init.start_param || '';
-    if (sp.startsWith('ref_')){
-      const refBy = sp.split('ref_')[1];
-      // Only count once per UID
-      const flagged = get('referredBy', null);
-      if (!flagged) {
-        set('referredBy', refBy);
-        // Send a simple ping to channel so you can award on admin side if desired
-        const text = `👥 <b>New Referral</b>%0A👤 User: ${encodeURIComponent(FULLNAME)} (${UID})%0A🔗 RefBy: ${encodeURIComponent(refBy)}`;
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${PRIVATE_CHANNEL_ID}&parse_mode=HTML&text=${text}`);
-      }
-    }
-  })();
+                  withdrawBalanceDisplay = document.getElementById('withdrawBalanceDisplay'), paymentAddressInput = document.getElementById('paymentAddress'),
 
-  // Init render
-  renderAll();
-</script>
+                  finalWithdrawBtn = document.getElementById('finalWithdrawBtn'), referralLinkDisplay = document.getElementById('referralLink'),
+
+                  referralCountDisplay = document.getElementById('referralCountDisplay'), referralBonusDisplay = document.getElementById('referralBonusDisplay'),
+
+                  adminPanel = document.getElementById('adminPanel'), userInfoDisplay = document.getElementById('userInfo');
+
+
+
+            // --- App Constants & Configuration ---
+
+            // To set up your bot, search for "EDIT_THIS" and replace the values on the following lines.
+
+            const ADMIN_ID = 8322375043; // EDIT_THIS: Replace with your numeric Telegram User ID.
+
+            const BOT_USERNAME = '@Earning_25_bot'; // EDIT_THIS: Replace with your bot's username.
+
+            const WEBAPP_NAME = '@Earning_25_bot';   // EDIT_THIS: Replace with your web app's short name.
+
+            
+
+            const WITHDRAW_THRESHOLD = 10;      // 10 USDT
+
+            const AD_REWARD_CENTS = 1;          // 0.01 USDT = 1 cent
+
+            const REFERRAL_BONUS_USDT = 0.5;    // 0.5 USDT
+
+            const DAILY_AD_LIMIT = 1000;
+
+
+
+            // --- App State ---
+
+            // balanceInCents is used to avoid floating point issues. 100 cents = 1 USDT.
+
+            let state = {
+
+                balanceInCents: 0,
+
+                totalAdCount: 0,
+
+                dailyAdCount: 0,
+
+                lastAdDate: null,
+
+                referralCount: 0 
+
+            };
+
+
+
+            // ---- State Management ----
+
+            function getTodayDateString() { return new Date().toISOString().split('T')[0]; }
+
+            function loadState() {
+
+                try {
+const savedState = JSON.parse(localStorage.getItem('earningAppUSDTState'));
+
+                    if (savedState) { 
+
+                        // Ensure all state properties are present
+
+                        state = { ...state, ...savedState };
+
+                    }
+
+                } catch (e) { console.error("Could not load state", e); }
+
+                
+
+                // Reset daily ad count if it's a new day
+
+                if (state.lastAdDate !== getTodayDateString()) {
+
+                    state.dailyAdCount = 0;
+
+                    state.lastAdDate = getTodayDateString();
+
+                    saveState();
+
+                }
+
+            }
+
+            function saveState() {
+
+                try {
+
+                    localStorage.setItem('earningAppUSDTState', JSON.stringify(state));
+
+                } catch (e) { console.error("Could not save state", e); }
+
+            }
+
+            
+
+            // ---- UI Updates & View Management ----
+
+            function updateUI() {
+
+                const balanceInUSDT = (state.balanceInCents / 100).toFixed(2);
+
+                
+
+                // Home & Withdraw Views
+
+                balanceDisplay.textContent = `USDT ${balanceInUSDT}`;
+
+                adCountDisplay.textContent = state.totalAdCount;
+
+                dailyAdCountDisplay.textContent = `${state.dailyAdCount} / ${DAILY_AD_LIMIT}`;
+
+                withdrawBalanceDisplay.textContent = `USDT ${balanceInUSDT}`;
+
+                
+
+                // Referral View
+
+                referralCountDisplay.textContent = state.referralCount;
+
+                const referralBonus = (state.referralCount * REFERRAL_BONUS_USDT).toFixed(2);
+
+                referralBonusDisplay.textContent = `USDT ${referralBonus}`;
+
+
+
+                // Button States
+
+                const isWithdrawalPossible = parseFloat(balanceInUSDT) >= WITHDRAW_THRESHOLD;
+
+                mainWithdrawBtn.disabled = !isWithdrawalPossible;
+
+                mainWithdrawBtn.textContent = isWithdrawalPossible ? 'Go to Withdraw' : `Reach ${WITHDRAW_THRESHOLD.toFixed(2)} USDT to Withdraw`;
+
+                
+
+                finalWithdrawBtn.disabled = !isWithdrawalPossible;
+
+                finalWithdrawBtn.textContent = isWithdrawalPossible ? `Withdraw ${balanceInUSDT} USDT` : `Minimum ${WITHDRAW_THRESHOLD.toFixed(2)} USDT required`;
+
+                
+
+                const adLimitReached = state.dailyAdCount >= DAILY_AD_LIMIT;
+
+                rewardedBtn.disabled = adLimitReached;
+
+                rewardedBtn.textContent = adLimitReached ? 'Daily Limit Reached' : 'Watch Ad (+0.01 USDT)';
+
+            }
+
+            
+
+            function showView(viewId) {
+
+                document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+
+                document.getElementById(viewId).style.display = 'block';
+
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+                const activeNavId = { 'home-view': 'navHome', 'withdraw-view': 'navWithdraw', 'referral-view': 'navRefer' }[viewId];
+
+                if(activeNavId) document.getElementById(activeNavId).classList.add('active');
+
+            }
+
+
+
+            let statusTimeout;
+
+            function showStatus(message, type, duration = 4000) {
+
+                clearTimeout(statusTimeout);
+
+                statusMessage.textContent = message;
+
+                statusMessage.className = `status-message ${type}`;
+
+                statusTimeout = setTimeout(() => { statusMessage.style.display = 'none'; }, duration);
+
+            }
+
+
+
+            // ---- Ad Handling ----
+
+            function handleAdSuccess() {
+
+                state.totalAdCount++;
+
+                state.dailyAdCount++;
+
+                state.lastAdDate = getTodayDateString();
+
+                state.balanceInCents += AD_REWARD_CENTS;
+
+                
+
+                showStatus(`Success! +${(AD_REWARD_CENTS / 100).toFixed(2)} USDT has been added.`, 'success');
+
+                saveState();
+
+                updateUI();
+
+            }
+
+
+
+            function handleAdError(error) {
+
+                console.error('Ad Error:', error);
+
+                showStatus('Failed to load ad. Please try again.', 'error');
+
+            }
+
+
+
+            // ---- App Logic ----
+
+            function requestAd() {
+
+                if (state.dailyAdCount >= DAILY_AD_LIMIT) {
+
+                    showStatus("You've reached the daily ad limit.", 'error');
+
+                    return;
+
+                }
+
+                showStatus('Loading ad, please wait...', 'info');
+
+                // The Promise is a simulator for the ad network callback
+
+                Promise.resolve(show_9459352()).then(handleAdSuccess).catch(handleAdError);
+
+            }
+
+
+
+            function handleWithdrawal() {
+
+                const balanceInUSDT = (state.balanceInCents / 100).toFixed(2);
+
+                const walletAddress = paymentAddressInput.value.trim();
+
+
+
+                if (parseFloat(balanceInUSDT) < WITHDRAW_THRESHOLD) {
+
+                    showStatus(`You need at least ${WITHDRAW_THRESHOLD.toFixed(2)} USDT to withdraw.`, 'error');
+
+                    return;
+
+                }
+
+                // Basic validation for USDT TRC20 address
+
+                if (!walletAddress.startsWith('T') || walletAddress.length < 34) {
+
+                    showStatus('Please enter a valid USDT (TRC20) wallet address.', 'error');
+
+                    return;
+
+                }
+
+                const user = tg.initDataUnsafe.user;
+
+                const message = `--- Withdrawal Request ---\n\nUser ID: ${user.id}\nName: ${user.first_name} ${user.last_name || ''}\nUsername: @${user.username || 'N/A'}\n\nAmount: ${balanceInUSDT} USDT\nWallet Address: ${walletAddress}`;
+
+                
+
+                tg.sendData(message);
+
+                showStatus('Your withdrawal request has been sent for review.', 'success');
+
+                
+
+                // Reset balance after request
+
+                state.balanceInCents = 0;
+
+                saveState();
+
+                updateUI();
+
+                paymentAddressInput.value = '';
+
+                showView('home-view');
+
+            }
+
+            
+
+            function generateReferralLink() {
+
+                const user = tg.initDataUnsafe.user;
+
+                if (user && user.id && BOT_USERNAME !== 'YourBotUsername' && WEBAPP_NAME !== 'YourWebAppName')
+
+      
+                {
+
+                    referralLinkDisplay.textContent = `https://t.me/${BOT_USERNAME}/${WEBAPP_NAME}?startapp=ref${user.id}`;
+
+                } else {
+
+                    referralLinkDisplay.textContent = "Referral link cannot be generated. Configure bot info in the script.";
+
+                    referralLinkDisplay.style.color = "var(--warning-color)";
+
+                    referralLinkDisplay.style.cursor = "default";
+
+                }
+
+            }
+ /* 
+
+            --- DEVELOPER NOTE ON REFERRALS ---
+
+            The current code only SHOWS referral stats stored locally. It does NOT automatically
+
+            increment the count or add the bonus when a new user joins.
+
+            
+
+            A secure referral system requires a backend server:
+
+            1. New User (User B) clicks referral link from User A.
+
+            2. User B's app sends their own ID and the referrer's ID (from start_param) to your server.
+
+            3. Your server verifies the referral (e.g., checks if User B is new).
+
+            4. If valid, the server updates User A's data in a database (increments referralCount).
+
+            5. The server then adds the 0.5 USDT bonus to User A's balance.
+
+            6. When User A opens the app, it should fetch the latest state (including referrals) from the server.
+
+            
+
+            The logic below is a placeholder for the user who was referred.
+
+            */
+
+            function handleReferralStart() {
+
+                if (tg.initDataUnsafe.start_param) {
+
+                    const referrerId = tg.initDataUnsafe.start_param.replace('ref', '');
+
+                    console.log("App started with referral parameter. Referrer ID:", referrerId);
+
+                    // You can show a welcome message to the new user.
+
+                    // The actual reward logic MUST be handled on a backend.
+
+                    showStatus('Welcome! You joined via a referral link.', 'success', 5000);
+
+                }
+
+            }
+  // ---- Event Listeners ----
+
+            rewardedBtn.addEventListener('click', () => requestAd());
+
+            finalWithdrawBtn.addEventListener('click', handleWithdrawal);
+
+            document.getElementById('navHome').addEventListener('click', () => showView('home-view'));
+
+            document.getElementById('navWithdraw').addEventListener('click', () => showView('withdraw-view'));
+
+            document.getElementById('navRefer').addEventListener('click', () => showView('referral-view'));
+
+            mainWithdrawBtn.addEventListener('click', () => showView('withdraw-view'));
+
+
+
+            referralLinkDisplay.addEventListener('click', () => {
+
+                if(navigator.clipboard && referralLinkDisplay.textContent.startsWith('https://')) {
+
+                    navigator.clipboard.writeText(referralLinkDisplay.textContent)
+
+                        .then(() => showStatus('Referral link copied!', 'success'))
+
+                        .catch(() => showStatus('Could not copy link.', 'error'));
+
+                }
+
+            });
+
+// ---- Initialization ----
+
+            function initializeApp() {
+
+                tg.ready();
+
+                tg.expand();
+
+                
+
+                loadState();
+
+                updateUI();
+
+                generateReferralLink();
+
+                handleReferralStart();
+
+                
+
+                const user = tg.initDataUnsafe.user;
+
+                if (user && user.id === ADMIN_ID) {
+
+                    adminPanel.style.display = 'block';
+
+                    userInfoDisplay.textContent = `Welcome, Admin! User: ${user.first_name} (@${user.username || 'N/A'}), ID: ${user.id}`;
+
+                }
+
+            }
+
+
+
+            initializeApp();
+
+        });
+
+    </script>
+
 </body>
+
+
 </html>
